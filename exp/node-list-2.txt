@@ -1,0 +1,10 @@
+compute-1-24.local 10
+compute-1-14.local 10
+compute-1-9.local 10
+compute-1-4.local 10
+compute-1-19.local 4
+compute-1-29.local 4
+compute-0-28.local 4
+compute-0-30.local 4
+compute-0-32.local 4
+compute-0-21.local 4
