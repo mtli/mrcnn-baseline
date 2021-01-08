@@ -1,2 +1,0 @@
-compute-0-32.local 4
-compute-0-28.local 4

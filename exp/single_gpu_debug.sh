@@ -5,12 +5,15 @@ absDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )"
 CONDA_ENV=d24
 MMDET_PATH="$HOME/repo/mmdetection2.4"
 CONFIG_FILE="$absDir/../configs/mask_rcnn_r50_fpn_lst_2x_coco.py"
-WORK_DIR="/data/mengtial/Exp/COCO/mrcnn_lst_2x"
-COMPUTE_LIST="$absDir/../exp/compute-list-2.txt"
-PORT=40034
+WORK_DIR="/data2/mengtial/Exp/COCO/debug"
 
 ###########################################################################
 
-sh "$absDir/../dispatch/dist_launch_ex.sh" \
-	"$CONDA_ENV" "$MMDET_PATH" "$CONFIG_FILE" \
-	"$WORK_DIR" "$COMPUTE_LIST" $PORT \
+cd $MMDET_PATH
+
+python "$MMDET_PATH/tools/train.py" \
+	"$CONFIG_FILE" \
+	--work-dir "$WORK_DIR" \
+	--launcher none \
+	--gpus 1 \
+	--seed 0 \
