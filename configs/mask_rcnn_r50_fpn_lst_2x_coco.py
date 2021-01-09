@@ -3,10 +3,12 @@
 Changes from standard mmdet config:
 - [Model] Initialize ResNet from scratch instead of ImageNet pretrained
 - [Model] Not freeze any stages instead of freeze the first stage of ResNet
+- [Model] Not freeze any normalization layers (norm_eval = False)
 - [Model] Use synchronized BatchNorm instead of regular BatchNorm
 - [Data] Use large scale jittering for data augmentation (testing pipeline remains the same)
 - [Data] Set samples_per_gpu to 4 instead of 2 (use 64 GPUs to get total batch size 256)
 - [Data] Set training input size to 896x896 (it should be 1024x1024, but does not fit into 11GB GPUs)
+- [Data] Set testing input size to 896x896 (consistent with training)
 - [Optimization] Use learning rate 0.32 instead of 0.02
 - [Optimization] Use learning rate warm up steps of 1000 instead of 500
 - [Optimization] Use linear decay instead of step decay
@@ -28,7 +30,7 @@ model = dict(
         out_indices=(0, 1, 2, 3),
         frozen_stages=-1,
         norm_cfg=dict(type='SyncBN', requires_grad=True),
-        norm_eval=True,
+        norm_eval=False,
         style='pytorch'),
     neck=dict(
         type='FPN',
@@ -169,7 +171,7 @@ test_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(
         type='MultiScaleFlipAug',
-        img_scale=(1333, 800),
+        img_scale=(896, 896),
         flip=False,
         transforms=[
             dict(type='Resize', keep_ratio=True),

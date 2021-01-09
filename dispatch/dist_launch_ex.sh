@@ -38,17 +38,17 @@ while read -u10 nodeInfo; do
 	rank=$((rank+1))
 done 10< "$COMPUTE_LIST"
 
-s="${GPUIDs//[^,]}"
+s="${masterGPUIDs//[^,]}"
 nc="${#s}"
 nGPU=$((nc+1))
-export CUDA_VISIBLE_DEVICES=$GPUIDs
+export CUDA_VISIBLE_DEVICES=$masterGPUIDs
 
 . activate $CONDA_ENV
 
 # cd for getting the mmdet git tag
 cd "$MMDET_PATH"
 
-echo "Starting script on $masterNode ($GPUIDs, master)"
+echo "Starting script on $masterNode ($masterGPUIDs, master)"
 python -m torch.distributed.launch \
 	--nnodes $nNode \
 	--node_rank 0 \
