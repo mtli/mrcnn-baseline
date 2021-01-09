@@ -10,16 +10,10 @@ N_GPU=$6
 MMDET_PATH=$7
 CONFIG_FILE=$8
 WORK_DIR=$9
+RESUME_FROM=${10}
 
 nodeName=$HOSTNAME
 
-if [ "$nodeName" == "compute-0-19.local" ]; then
-	export CUDA_VISIBLE_DEVICES=3
-fi
-
-if [ "$nodeName" == "compute-1-19.local" ]; then
-	export CUDA_VISIBLE_DEVICES=0,2,3
-fi
 
 . activate $CONDA_ENV
 
@@ -39,4 +33,5 @@ nohup python -m torch.distributed.launch \
 	--launcher pytorch \
 	--gpus $N_GPU \
 	--seed 0 \
+	--resume-from "$RESUME_FROM" \
 > /tmp/$USER-dist-train-$nodeName.log 2>&1 &

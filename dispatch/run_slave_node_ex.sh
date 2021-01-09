@@ -12,6 +12,7 @@ GPUIDs=$6
 MMDET_PATH=$7
 CONFIG_FILE=$8
 WORK_DIR=$9
+RESUME_FROM=${10}
 
 nodeName=$HOSTNAME
 
@@ -37,4 +38,5 @@ nohup python -m torch.distributed.launch \
 	--work-dir "$WORK_DIR" \
 	--launcher pytorch \
 	--seed 0 \
+	--resume-from "$RESUME_FROM" \
 > /tmp/$USER-dist-train-$nodeName.log 2>&1 &

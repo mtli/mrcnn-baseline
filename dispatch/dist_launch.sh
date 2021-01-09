@@ -8,6 +8,7 @@ WORK_DIR=$4
 N_NODE=$5
 NODE_LIST=$6
 PORT=$7
+RESUME_FROM=$8
 
 
 rank=0
@@ -27,7 +28,7 @@ while read -u10 nodeInfo; do
 	else
 		ssh $nodeName bash "$absDir/../dispatch/run_slave_node.sh" \
 			$CONDA_ENV $N_NODE $rank $masterNode $PORT $nGPU \
-			"$MMDET_PATH" "$CONFIG_FILE" "$WORK_DIR"
+			"$MMDET_PATH" "$CONFIG_FILE" "$WORK_DIR" "$RESUME_FROM"
 	fi
 	rank=$((rank+1))
 done 10< "$NODE_LIST"
@@ -57,3 +58,4 @@ python -m torch.distributed.launch \
 	--launcher pytorch \
 	--gpus $nGPU \
 	--seed 0 \
+	--resume-from "$RESUME_FROM" \

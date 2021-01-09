@@ -1,49 +1,22 @@
-# sAP &mdash; Code for Towards Streaming Perception
+# Mask R-CNN Baselines (Distributed Training)
 
-<p align="center"><img alt="Teaser" src="doc/img/streaming.jpg" width="500px"></p>
+This repo aims to reproduce the large-batch-size Mask R-CNN baselines used in [Google Brain's copy-paste paper](https://arxiv.org/abs/2012.07177) \[1\], which has a much higher AP than standard setting. Here the implementation is based on PyTorch and GPU clusters instead of TensorFlow and TPU clusters. All change details from the standard settings are documented in the configs (`configs/*.py`).
 
-![#fc4903](https://via.placeholder.com/15/fc4903/000000?text=+) ECCV Best Paper Honorable Mention Award
-
-This repo contains code for our ECCV 2020 [**paper**](https://arxiv.org/abs/2005.10420) (Towards Streaming Perception). sAP stands for streaming Average Precision.
-
-The dataset used in this project (Argoverse-HD) can be found on the [**project page**](http://www.cs.cmu.edu/~mengtial/proj/streaming/).
+\[1\] Ghiasi et al. [Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation](https://arxiv.org/abs/2012.07177). arXiv 2020.
 
 
-## Contents
+## Getting Started
 
-- Offline detection
-- Streaming (real-time online) detection
-- Streaming tracking \& forecasting
-- Simulated streaming detection, tracking, \& forecasting
-- Simulated streaming detection, tracking, \& forecasting with infinite GPUs 
-- Meta-detector Streamer
-- Streaming evaluation
-- Single-frame schedule simulator
-- Helper functions for visualization
+- Install CUDA, pytorch, and mmdetection (tested with CUDA 10.0, PyTorch 1.4, and mmdetection 2.4)
+- Copy the `RandomResize` augmentation from `custom_pipelines.py` into `<mmdetection path>/datasets/pipelines/transforms.py`
+- Specify compute hardware through `exp/node-list-*.txt` (ssh-able hostnames + number of GPUs) or `exp/compute-list-*.txt` (ssh-able hostnames + specific GPU IDs)
+- Point to the path of your copy of COCO data using `data_root` in `configs/*.py`. Depending how good your NFS is, you might want to create a local copy of the dataset on every node to prevent network bottlenecks
+- Change the parameters in `exp/lsj_2x.sh` or `exp/lsj_32x.sh` and run it!
+- The checkpoints and Tensorboard logs will be saved in the `WORK_DIR` you specified
 
 
-<p align="center"><img alt="Teaser" src="doc/img/latency-aware.gif" width="600px" style=" border: 1px solid black;
-  -webkit-box-shadow: 2px 2px 1px #666;
-  box-shadow: 2px 2px 1px #666;"></p>
+## Troubleshooting
 
-## Getting started
+Note that useful debug information is often buried during distributed training. For example, when you get CUDA, NCCL, PyTorch error messages, most likely it's a bug in your code and has nothing to do with distributed training. Therefore, the first thing to do is to make sure the code runs in the single-GPU mode on every node using `exp/single_gpu_debug.sh`. It's easy to forget to copy data to one of the nodes.
 
-1. Follow the instructions [here](doc/data_setup.md) to download and set up the dataset.
-1. Follow the instructions [here](doc/code_setup.md) to install the dependencies.
-1. Check out the examples to run various tasks in `exp/*`. The documentation for these tasks can be found [here](doc/tasks.md).
-
-
-## Citation
-If you use the code or the data for your research, please cite the paper:
-
-```
-@article{Li2020StreamingP,
-  title={Towards Streaming Perception},
-  author={Li, Mengtian and Wang, Yuxiong and Ramanan, Deva},
-  journal={ECCV},
-  year={2020}
-}
-```
-
-## Acknowledgement
-We would like to thank the [mmdetection](https://github.com/open-mmlab/mmdetection) team for implementing so many different detectors in a single awesome repo with a unified interface! This greatly reduced our efforts to evaluate different detectors under our streaming setting.
+You can also run `exp/standard.sh` to train the standard Mask R-CNN using only two 4-GPU nodes to check your environment.
