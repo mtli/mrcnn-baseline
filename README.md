@@ -1,6 +1,6 @@
 # Mask R-CNN Baselines (Distributed Training)
 
-This repo aims to reproduce the large-batch-size Mask R-CNN baselines used in [Google Brain's copy-paste paper](https://arxiv.org/abs/2012.07177) \[1\], which has a much higher AP than standard setting. Here the implementation is based on PyTorch and GPU clusters instead of TensorFlow and TPU clusters. All change details from the standard settings are documented in the configs (`configs/*.py`).
+This repo aims to reproduce the large-batch-size Mask R-CNN baselines used in [Google Brain's copy-paste paper](https://arxiv.org/abs/2012.07177) \[1\], which has a much higher AP than the standard setting. The implementation here is based on PyTorch and GPU clusters instead of TensorFlow and TPU clusters. All change details from the standard settings are documented in the configs (`configs/*.py`).
 
 \[1\] Ghiasi et al. [Simple Copy-Paste is a Strong Data Augmentation Method for Instance Segmentation](https://arxiv.org/abs/2012.07177). arXiv 2020.
 
@@ -19,4 +19,4 @@ This repo aims to reproduce the large-batch-size Mask R-CNN baselines used in [G
 
 Note that useful debug information is often buried during distributed training. For example, when you get CUDA, NCCL, PyTorch error messages, most likely it's a bug in your code and has nothing to do with distributed training. Therefore, the first thing to do is to make sure the code runs in the single-GPU mode on every node using `exp/single_gpu_debug.sh`. It's easy to forget to copy data to one of the nodes.
 
-You can also run `exp/standard.sh` to train the standard Mask R-CNN using only two 4-GPU nodes to check your environment.
+You can also run `exp/standard.sh` to train the standard Mask R-CNN using only two 4-GPU nodes to test your environment.
