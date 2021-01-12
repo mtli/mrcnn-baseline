@@ -11,7 +11,7 @@ Changes from standard mmdet config:
 - [Data] Set testing input size to 896x896 (consistent with training)
 - [Optimization] Use learning rate 0.32 instead of 0.02
 - [Optimization] Use learning rate warm up steps of 1000 instead of 500
-- [Optimization] Use linear decay instead of step decay  (not in the paper, but should work better for limited budget)
+- [Optimization] Use linear decay instead of step decay (not in the paper, but simpler and should work better for limited budget)
 - [Optimization] Update learning rate after each step instead of after each epoch
 - [Optimization] Use weight decay 4e-5 instead of 0.0001
 - [Optimization] Change epochs to 384 (32x) from 24 (2x)
